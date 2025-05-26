@@ -1,0 +1,281 @@
+<html>
+    <head>
+        <title>MECO: Chi Siamo</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/jpeg" href="meco.jpeg">
+    </head>
+
+    <body>
+
+        <header>
+          <img style="position: absolute; display: flex; border-radius: 200px; transform: none; margin-left: 20px; height: 50px;" src="meco.jpeg">
+            <h1>Chi Siamo</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">HOME</a></li>
+                    <li><a href="incisioni.html">LE NOSTRE INCISIONI</a></li>
+                    <li><a href="stampe3D.html">LE NOSTRE STAMPE 3D</a></li>
+                    <li><a href="macchinari.html">I NOSTRI MACCHINARI</a></li>
+                    <li><a href="about.html">CHI SIAMO</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <hr>
+
+        <main>
+            <p>
+                Siamo un'azienda che mira a trasformare le tue idee in realtà attraverso tecnologie innovative come l'incisione laser e la stampa 3D. Puntiamo sulla precisione, la personalizzazione e la qualità per offrire soluzioni uniche, perfette per ogni esigenza. Che si tratti di oggettistica, gadget o progetti su misura, siamo qui per darti il meglio della creatività e dell'innovazione. Con MECO, ogni dettaglio prende forma!
+
+                <br>
+                <br>
+
+                In collaborazione con:
+
+                    <br>
+                    <br>
+
+                    <a href="https://www.dhl.com/it-it/home.html">
+                        <img src="brandforum_logo_tale_dhl_logo.jpg">
+                    </a>
+
+                    <br>
+                    <br>
+
+                    <a href="https://gls-group.com/IT/it/home/">
+                        <img src="GLS_Logo.jpg">
+                    </a>
+
+                    <br>
+                    <br>
+
+                    <a href="https://www.vinted.it">
+                        <img src="vintedCollab.png">
+                    </a>
+
+                    <br>
+                    <br>
+
+                    <a href="https://www.poste.it">
+                        <img src="logo_corriere_poste_italiane_500.png">
+                    </a>
+
+                <br>
+                <br>
+
+                La nostra sede si trova presso:
+                    <br>
+                    <br>
+
+                    <a href="https://www.google.it/maps/place/Via+e+Fermi,+5,+63075+Zona+Industriale+Acquaviva+Picena+AP/@42.9533792,13.839519,17z/data=!3m1!4b1!4m6!3m5!1s0x13321e18d750bfc5:0x9e89971663ba9e01!8m2!3d42.9533792!4d13.8420886!16s%2Fg%2F11c2fzp0rp?hl=it&entry=ttu&g_ep=EgoyMDI1MDMxMi4wIKXMDSoASAFQAw%3D%3D">
+                        <img class="loghiAbout" src="Mappa_(Apple).png">
+                    </a>
+                
+                <br>
+                <br> 
+                
+                CONTATTI:
+
+                <br>
+                <br>
+                
+                <a href="https://www.instagram.com">
+                    <img class="contatti" src="Instagram_icon.png">
+                </a>
+
+                <br>
+                ig: meco_incisioni
+
+                <br>
+                <br>
+
+                <img class="contatti" src="telefono_logo.png">
+                
+                <br>
+                Telefono: +39 380 645 8336
+            </p>
+            
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Incisioni & Stampe 3D. Tutti i diritti riservati.</p>
+        </footer>
+
+<!-- Carrello -->
+<div id="cart-icon" onclick="toggleCart()">
+  <img src="cart-icon.png" alt="Carrello" class="iconaCarrello">
+</div>
+
+<div id="cart-overlay" onclick="toggleCart()" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0);z-index:998;"></div>
+
+<div id="carrello-popup" class="no-stile" style="position:fixed;top:0;right:-1500px;width:1000px;height:100%;background-color:rgb(205, 166, 128);box-shadow:-2px 0 5px rgba(0,0,0,0.3);z-index:999;transition:right 1s;padding:20px;overflow-y:auto;overflow-x:hidden;border-left:5px solid #3d1212;border-bottom-left-radius: 20px; border-top-left-radius: 20px;">
+  <h2 style="text-align: center;">Carrello</h2>
+  <hr>
+  <ul id="cart-items" style="list-style:none;padding:0;"></ul>
+  <p><strong>Totale:</strong> <span id="cart-total">0 €</span></p>
+  <button onclick="checkout()" style="border-radius: 100px; padding: 10px 20px;">Ordina</button>
+  <br>
+  <button style="margin-top: 25px; border-radius: 100px; padding: 10px 20px;"><a href="ordini.html" style="margin-top: 25px; color:black; font-size:13px;border-radius: 100px;">📜 Visualizza i tuoi ordini</a></button>
+  <br>
+  <br>
+  <h3 style="text-align: center;">Salvati per dopo</h3>
+  <hr>
+  <ul id="saved-items" style="list-style:none;padding:0;"></ul>
+</div>
+
+<script>
+  function salvaPerDopo(index) {
+    const cart = loadCart();
+    cart[index].salvato = true;
+    saveCart(cart);
+    renderCart();
+  }
+
+  function ripristina(index) {
+    const cart = loadCart();
+    cart[index].salvato = false;
+    saveCart(cart);
+    renderCart();
+  }
+
+    function toggleCart() {
+      const panel = document.getElementById("carrello-popup");
+      const overlay = document.getElementById("cart-overlay");
+      const isOpen = panel.style.right === "0px";
+      panel.style.right = isOpen ? "-1500px" : "0px";
+      overlay.style.display = isOpen ? "none" : "block";
+      overlay.style.pointerEvents = isOpen ? "none" : "auto";
+    }
+
+    function apriCarrello() {
+      const panel = document.getElementById("carrello-popup");
+      const overlay = document.getElementById("cart-overlay");
+      if (panel.style.right === "0px") return;
+      panel.style.right = "0px";
+      overlay.style.display = "block";
+      overlay.style.pointerEvents = "auto";
+    }
+
+    document.getElementById("cart-overlay").addEventListener("click", () => {
+      const panel = document.getElementById("carrello-popup");
+      const overlay = document.getElementById("cart-overlay");
+      panel.style.right = "-1500px";
+      overlay.style.display = "none";
+      overlay.style.pointerEvents = "none";
+    });
+
+    function loadCart() {
+      return JSON.parse(localStorage.getItem("carrello")) || [];
+    }
+
+    function saveCart(cart) {
+      localStorage.setItem("carrello", JSON.stringify(cart));
+    }
+
+    function renderCart() {
+  const ul = document.getElementById("cart-items");
+  const savedUl = document.getElementById("saved-items");
+  const total = document.getElementById("cart-total");
+  const carrello = loadCart();
+  ul.innerHTML = "";
+  savedUl.innerHTML = "";
+  let somma = 0;
+
+  carrello.forEach((p, i) => {
+    const li = document.createElement("li");
+    if (!p.salvato) {
+      li.innerHTML = `
+        <div style="margin-bottom:15px;border-bottom:1px solid #ccc;padding-bottom:10px;">
+          <img src="lampada3D.jpeg" alt="Abat-Jour" style="border-radius:10px; margin-top:5px; height: 150px">
+          <strong>${p.nome}</strong><br>
+          <small style="color:#555;">${p.opzioni}</small><br>
+          <span style="font-weight:bold;">${p.prezzo.toFixed(2)} €</span>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
+            <div>
+              <button onclick="modificaQuantità(${i}, -1)" style="border-radius:100px;padding:5px 9px;">−</button>
+              <span style="margin: 0 8px;">${p.quantità}</span>
+              <button onclick="modificaQuantità(${i}, 1)" style="border-radius:100px;padding:5px 9px;">+</button>
+            </div>
+            <div>
+              <button onclick="salvaPerDopo(${i})" style="border-radius:100px;padding:5px 9px;">💾 Salva per dopo</button>
+            </div>
+            <div>
+              <button onclick="rimuoviArticolo(${i})" style="border-radius:100px;padding:5px 9px;">🗑️ Rimuovi</button>
+            </div>
+          </div>
+        </div>
+      `;
+      somma += p.prezzo * p.quantità;
+      ul.appendChild(li);
+    } else {
+      li.innerHTML = `
+        <div style="margin-bottom:15px;border-bottom:1px solid #ccc;padding-bottom:10px;">
+          <img src="lampada3D.jpeg" alt="Abat-Jour" style="border-radius:10px; margin-top:5px; height: 150px">
+          <strong>${p.nome}</strong><br>
+          <small style="color:#555;">${p.opzioni}</small><br>
+          <span style="font-weight:bold;">${p.prezzo.toFixed(2)} €</span>
+          <span style="margin: 0px;">Qt. ${p.quantità}</span>
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
+            <div>
+                <button onclick="ripristina(${i})" style="border-radius:100px;padding:5px 9px;">↩️ Sposta nel carrello</button>
+            </div>
+            <div>
+                <button onclick="rimuoviArticolo(${i})" style="border-radius:100px;padding:5px 9px;">🗑️ Rimuovi</button>
+            </div>
+          </div>
+        </div>
+      `;
+      savedUl.appendChild(li);
+    }
+  });
+
+  total.textContent = somma.toFixed(2) + " €";
+}
+
+    function aggiungiAlCarrello(nome, prezzo, opzioni) {
+      const cart = loadCart();
+      const index = cart.findIndex(p => p.nome === nome && p.opzioni === opzioni);
+      if (index >= 0) {
+        cart[index].quantità++;
+      } else {
+        cart.push({ nome, prezzo, opzioni, quantità: 1 });
+      }
+      saveCart(cart);
+      renderCart();
+      apriCarrello();
+    }
+
+    function modificaQuantità(index, delta) {
+      const cart = loadCart();
+      cart[index].quantità += delta;
+      if (cart[index].quantità <= 0) cart.splice(index, 1);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function rimuoviArticolo(index) {
+      const cart = loadCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      renderCart();
+    }
+
+    function checkout() {
+      window.location.href = "pagamento.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCart();
+      document.getElementById("btn-aggiungi").addEventListener("click", () => {
+        const materiale = document.querySelectorAll("select")[0].value;
+        const coloreBase = document.querySelectorAll("select")[1].value;
+        const plafoniera = document.querySelectorAll("select")[2].value;
+        const nome = "Abat-Jour 3D";
+        const prezzo = 100.00;
+        const opzioni = `${materiale} / ${coloreBase} / ${plafoniera}`;
+        aggiungiAlCarrello(nome, prezzo, opzioni);
+      });
+    });
+  </script>
+</body>
+</html>

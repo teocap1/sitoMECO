@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Conferma Ordine</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin-top: 20px;
+      background-color: #959595;
+      color: #000;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 800px;
+      margin: auto;
+      box-shadow: 0 0 10px #aaa;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .articolo {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #28a745;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <div class="step active" id="step1">
+      <h2>Riepilogo Ordine</h2>
+      <div id="riepilogo"></div>
+      <p><strong>Totale:</strong> <span id="totale">0 €</span></p>
+      <div class="buttons">
+        <div></div>
+        <button onclick="avanti()">Avanti</button>
+      </div>
+    </div>
+
+    <div class="step" id="step2">
+      <h2>Dati Cliente</h2>
+      <input id="nome" type="text" placeholder="Nome e cognome*" required />
+      <input id="email" type="email" placeholder="Email*" required />
+      <div class="buttons">
+        <button onclick="indietro()">Indietro</button>
+        <button onclick="avanti()">Avanti</button>
+      </div>
+    </div>
+
+    <div class="step" id="step3">
+      <h2>Indirizzo di Spedizione</h2>
+      <input id="indirizzo" type="text" placeholder="Indirizzo completo*" required />
+      <input id="telefono" type="tel" placeholder="Telefono (facoltativo)" />
+      <textarea id="note" placeholder="Note per la consegna (facoltative)"></textarea>
+      <div class="buttons">
+        <button onclick="indietro()">Indietro</button>
+        <button onclick="avanti()">Avanti</button>
+      </div>
+    </div>
+
+    <div class="step" id="step4">
+      <h2>Dati di Pagamento</h2>
+      <input id="carta" type="text" placeholder="Numero carta* (es. 1234 5678 9012 3456)" required />
+      <input id="scadenza" type="text" placeholder="Scadenza* (MM/AA)" required />
+      <input id="cvv" type="text" placeholder="CVV" required />
+      <div class="buttons">
+        <button onclick="indietro()">Indietro</button>
+        <button onclick="confermaOrdine()">Conferma Ordine</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let step = 1;
+
+    function avanti() {
+      document.getElementById("step" + step).classList.remove("active");
+      step++;
+      document.getElementById("step" + step).classList.add("active");
+    }
+
+    function indietro() {
+      document.getElementById("step" + step).classList.remove("active");
+      step--;
+      document.getElementById("step" + step).classList.add("active");
+    }
+
+    function confermaOrdine() {
+      const nome = document.getElementById("nome").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const indirizzo = document.getElementById("indirizzo").value.trim();
+      const carta = document.getElementById("carta").value.trim();
+
+      if (!nome) {
+        step = 2;
+        aggiornaStep();
+        const campo = document.getElementById("nome");
+        campo.focus();
+        campo.style.border = "2px solid red";
+        return;
+      } else {
+        document.getElementById("nome").style.border = "";
+      }
+
+      if (!email) {
+        step = 2;
+        aggiornaStep();
+        const campo = document.getElementById("email");
+        campo.focus();
+        campo.style.border = "2px solid red";
+        return;
+      } else {
+        document.getElementById("email").style.border = "";
+      }
+
+      if (!indirizzo) {
+        step = 2;
+        aggiornaStep();
+        const campo = document.getElementById("indirizzo");
+        campo.focus();
+        campo.style.border = "2px solid red";
+        return;
+      } else {
+        document.getElementById("indirizzo").style.border = "";
+      }
+
+      if (!carta) {
+        step = 2;
+        aggiornaStep();
+        const campo = document.getElementById("carta");
+        campo.focus();
+        campo.style.border = "5px solid red";
+        return;
+      } else {
+        document.getElementById("carta").style.border = "";
+      }
+
+      alert("Grazie per l'ordine, " + nome + "! Riceverai un'email a: " + email);
+      const storico = JSON.parse(localStorage.getItem("ordini") || "[]");
+      storico.push({
+        data: new Date().toLocaleString(),
+        prodotti: carrello.filter(p => !p.salvato),
+        totale: somma.toFixed(2)
+      });
+      localStorage.setItem("ordini", JSON.stringify(storico));
+      localStorage.removeItem("carrello");
+      window.location.href = "index_con_carrello.html";
+    }
+
+    function aggiornaStep() {
+      document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+      document.getElementById("step" + step).classList.add("active");
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault(); // evita l’invio del form
+        const attivo = document.querySelector(".step.active");
+
+        if (attivo.id === "step4") {
+          confermaOrdine(); // ultimo step
+        } else {
+          avanti(); // altri step
+        }
+      }
+    });
+
+    // Carica riepilogo carrello
+    const carrello = JSON.parse(localStorage.getItem("carrello")) || [];
+    const contenitore = document.getElementById("riepilogo");
+    const totale = document.getElementById("totale");
+
+    let somma = 0;
+    carrello.filter(p => !p.salvato).forEach(p => {
+      const div = document.createElement("div");
+      div.className = "articolo";
+      div.innerHTML = `
+        <div style="display:flex; gap:10px; align-items:center;">
+          <img src="${p.img}" style="width:80px; height:auto; border-radius:10px;" alt="Foto prodotto">
+          <div>
+            <strong>${p.nome}</strong><br>
+            <small>${p.opzioni}</small><br>
+            Quantità: ${p.quantità} × ${p.prezzo.toFixed(2)} €<br>
+            Subtotale: ${(p.quantità * p.prezzo).toFixed(2)} €
+          </div>
+        </div>
+      `;
+      contenitore.appendChild(div);
+      somma += p.quantità * p.prezzo;
+    });
+
+    totale.textContent = somma.toFixed(2) + " €";
+  </script>
+  <br><br>
+  <footer style="text-align: center; padding: 5px; background-color: #353535; color: #f4f4f4; ">
+    <p>&copy; 2025 Incisioni & Stampe 3D. Tutti i diritti riservati.</p>
+  </footer>
+
+</body>
+</html>
